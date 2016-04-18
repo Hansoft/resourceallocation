@@ -98,16 +98,16 @@ public:
 					HPMResourceProperties propRes = sdkSession->ResourceGetProperties(idRisorsa);
 					if (propRes.m_ResourceType != EHPMResourceType::EHPMResourceType_QAAccount )
 					{
-						
-						HPMUInt64 resultDel = sdkSession->ResourceGetDeletedDate(idRisorsa);
-						if (resultDel == 0)
+						string resourceName = string(propRes.m_Name.begin(), propRes.m_Name.end());
+						EHPMResourceLockFlag flag = sdkSession->ResourceGetLockFlags(idRisorsa);
+						if (flag == EHPMResourceLockFlag::EHPMResourceLockFlag_None)
 						{
-							string resource = string(propRes.m_Name.begin(), propRes.m_Name.end());
-							mapActiveResource[resource] = 1;
+							mapActiveResource[resourceName] = 1;
 						}
 	
 					}
 				}
+				
 				for (HPMUInt32 i = 0; i < projects.m_Projects.size(); ++i)
 				{
 					HPMUniqueID projectUid = projects.m_Projects[i];
